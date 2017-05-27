@@ -55,7 +55,7 @@
 
     var map;
 
-    var infowindow;
+    var infoWindow;
 
     function initMap() {
       // set up the map
@@ -77,7 +77,7 @@
         map: map
       });
 
-      infowindow = new google.maps.InfoWindow();
+      infoWindow = new google.maps.InfoWindow();
 
       // Try HTML5 geolocation.
       if (navigator.geolocation) {
@@ -92,11 +92,11 @@
 
           map.setCenter(pos);
         }, function() {
-          handleLocationError(true, infowindow, map.getCenter());
+          handleLocationError(true, infoWindow, map.getCenter());
         });
       } else {
         // Browser doesn't support Geolocation
-        handleLocationError(false, infowindow, map.getCenter());
+        handleLocationError(false, infoWindow, map.getCenter());
       }
 
       map.data.addListener('click', function(event) {
