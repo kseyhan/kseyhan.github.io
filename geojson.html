@@ -107,18 +107,18 @@
         var pointNoRooms = event.feature.getProperty("norooms");
         var pointKat = event.feature.getProperty("kat");
 
-        infowindow.setContent(
+        infoWindow.setContent(
           "<div style='width:150px; text-align: center;'> \
 			<a target='_blank' href='" + pointLink + "'>" + pointTitle + "</a> \
 			<p>" + pointAmmount + ", " + pointM2 + " m²\
 			<br>" + pointNoRooms + ", Kat: " + pointKat + " \
 			</div>"
         );
-        infowindow.setPosition(event.feature.getGeometry().get());
-        infowindow.setOptions({
+        infoWindow.setPosition(event.feature.getGeometry().get());
+        infoWindow.setOptions({
           pixelOffset: new google.maps.Size(0, -30)
         });
-        infowindow.open(map);
+        infoWindow.open(map);
       });
     }
 
