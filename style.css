@@ -9,7 +9,11 @@ html {
 .container {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-end;
+}
+
+.mail {
+    flex: 1;
 }
 
 .Site {
@@ -44,17 +48,22 @@ html {
     opacity: 0.7;
 }
 
+.fa-envelope {
+    background: #313335;
+    color: white;
+}
+
 .fa-xing {
-    background: #3B5998;
+    background: #007575;
     color: white;
 }
 
 .fa-github {
-    background: #55ACEE;
+    background: #dd5143;
     color: white;
 }
 
 .fa-linkedin {
-    background: #007bb5;
+    background: #0077b5;
     color: white;
 }
