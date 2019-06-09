@@ -32,6 +32,9 @@ plugins:
 show_excerpts: true
 
 permalink: ":year/:month/:day/:title"
+
+disqus:
+  shortname: blog-codecut-de.disqus.com
 # tag_page_layout: tag_page
 # tag_page_dir: tag
 # blog:
