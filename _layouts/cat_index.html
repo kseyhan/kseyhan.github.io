@@ -1,0 +1,34 @@
+---
+layout: post
+---
+
+<div class="category">
+  <!-- <a class="tag__back" href="/">&lt;-- back</a> -->
+  <h1 class="post-list-heading">{{ page.cat }}</h1>
+  <div>
+    {% if site.categories[page.cat] %}
+    <ul class="post-list">
+      {% for post in site.categories[page.cat] %}
+      <li>
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y"
+        -%}
+        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+        {%- if site.show_excerpts -%}
+        {{ post.excerpt }}
+        <a class="excerpt-post-link" href="{{ post.url | relative_url }}">
+          Continue reading →
+        </a>
+        {%- endif -%}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>There is no posts for this category.</p>
+    {% endif %}
+  </div>
+</div>
