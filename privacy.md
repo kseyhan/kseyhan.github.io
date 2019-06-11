@@ -2,7 +2,6 @@
 layout: page
 title: Privacy
 permalink: /privacy/
-order: 3
 ---
 
 # Privacy Policy

@@ -2,7 +2,6 @@
 layout: page
 title: Imprint
 permalink: /imprint/
-order: 4
 ---
 
 Kerem's Techblog (Kerem Seyhan)

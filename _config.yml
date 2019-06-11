@@ -32,6 +32,12 @@ plugins:
 show_excerpts: true
 
 permalink: ":year/:month/:day/:title"
+
+header_pages:
+  - categories.md
+  - tags.md
+  - privacy.md
+  - imprint.md
 # tag_page_layout: tag_page
 # tag_page_dir: tag
 # blog:
@@ -62,7 +68,8 @@ permalink: ":year/:month/:day/:title"
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-# exclude:
+exclude:
+  - backup/
 #   - Gemfile
 #   - Gemfile.lock
 #   - node_modules
