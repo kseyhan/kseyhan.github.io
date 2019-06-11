@@ -173,7 +173,7 @@ So lets go and create this file in the `_layouts` folder.
 {% endraw %}
 {% endhighlight %}
 
-If we now manually retrigger a build process we should have a structured folder called categories which all sub-categories and their belonging index.html files.
+If we now manually retrigger a build process we should have a structured folder called categories with all sub-categories and their belonging index.html files.
 
 Besides of that i wanted to have a Category and Tags link in the Navigation bar aswell which links to this folder.
 For this we simply just create a file called `categories.md` in the root of our project with the following source.
@@ -200,7 +200,7 @@ permalink: /categories/
 
 To get the tags working you can simply reuse all of the above and make sure that you exchange the site.categories variable with site.tags or simply copy and paste the code from my [github source of truth](https://github.com/kseyhan/kseyhan.github.io).
 
-If you did it right you should have a category_overview page now looking something like this:
+If done right there should be a category_overview page now looking something like this:
 
 ![screenshot categories overview](/assets/img/posts/2019-06-11/categories_overview.png){: width="300px"}
 
