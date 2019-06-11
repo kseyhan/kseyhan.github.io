@@ -42,6 +42,21 @@ header_pages:
   - tags.md
   - privacy.md
   - imprint.md
+
+social:
+  name: Kerem Seyhan
+  links:
+    - https://www.linkedin.com/in/kerem-seyhan-1189852b
+    - https://www.xing.com/profile/Kerem_Seyhan
+    - https://github.com/kseyhan
+
+webmaster_verifications:
+  google: HTPrOcpgKlO3ejNQOKll24-n3yz7KpIwzleR6APi15w
+  bing: 1234
+  alexa: 1234
+  yandex: 1234
+  baidu: 1234
+
 # tag_page_layout: tag_page
 # tag_page_dir: tag
 # blog:
