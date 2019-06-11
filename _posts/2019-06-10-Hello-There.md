@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Introduction"
+description: Kerems introduction to the internets.
 categories: [introduction]
 tags: [introduction]
 ---

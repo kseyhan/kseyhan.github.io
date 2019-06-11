@@ -22,6 +22,10 @@ url: "https://blog.codecut.de" # the base hostname & protocol for your site, e.g
 # twitter_username: jekyllrb
 github_username: kseyhan
 
+author: Kerem Seyhan
+
+logo: /assets/img/logo.png
+
 # Build settings
 markdown: kramdown
 theme: minima

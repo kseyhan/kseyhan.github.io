@@ -1,8 +1,9 @@
 ---
 layout: post
 title: "Setup a blog using Jekyll"
+description: A deep dive into generating a professional looking blog using Jekyll as a static site generator.
 categories: [Jekyll]
-tags: [blog, github, jekyll, static site generator, minima]
+tags: [blog, jekyll, static site generator, minima, jekyll generators]
 ---
 
 Today i'm going to show you how ive setup this blog. I decided to go with the default theme [Minima](https://github.com/jekyll/minima) that you get when creating a new [Jekyll](https://jekyllrb.com/) site and customize it to my needs.
@@ -198,7 +199,7 @@ permalink: /categories/
 {% endraw %}
 {% endhighlight %}
 
-To get the tags working you can simply reuse all of the above and make sure that you exchange the site.categories variable with site.tags or simply copy and paste the code from my [github source of truth](https://github.com/kseyhan/kseyhan.github.io).
+To get the tags working you can simply reuse all of the above and make sure that you exchange the site.categories variable with site.tags or simply copy and paste the code from my [github source](https://github.com/kseyhan/kseyhan.github.io) of truth.
 
 If done right there should be a category_overview page now looking something like this:
 
@@ -208,7 +209,7 @@ Now the only thing missing is that we show those categories and tags under each 
 
 So lets go..
 
-We copy the `post.html` from the minima source and copy it into our `_layouts` folder.
+We copy the `post.html` from the minima source into our `_layouts` folder.
 
 and we paste folling code to the end of that page
 {% highlight html %}
