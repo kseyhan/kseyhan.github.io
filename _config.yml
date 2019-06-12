@@ -16,7 +16,7 @@
 title: Kerem's Techblog
 email: blog@codecut.de
 description: >- # this means to ignore newlines until "baseurl:"
-  For feedback or questions feel contact me thru email.
+  My personal blog about various technical topics. For feedback or questions feel contact me through email.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://blog.codecut.de" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
@@ -53,9 +53,7 @@ social:
 webmaster_verifications:
   google: HTPrOcpgKlO3ejNQOKll24-n3yz7KpIwzleR6APi15w
   bing: 508D8341F6E0DBCFB3F9FD852D29D154
-  alexa: 1234
   yandex: 1b47c3c82dd07c0a
-  baidu: 1234
 
 # tag_page_layout: tag_page
 # tag_page_dir: tag
