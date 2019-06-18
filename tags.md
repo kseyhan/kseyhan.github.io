@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Tags
-permalink: /tag2/
+permalink: /tags/
 ---
 
 {% assign tags = site.tags | sort %}
