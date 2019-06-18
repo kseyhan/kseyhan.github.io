@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-06-18T23:17:07+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Kerem’s Techblog</title><subtitle>My personal blog about various technical topics. For feedback or questions feel contact me through email.</subtitle><author><name>Kerem Seyhan</name></author><entry><title type="html">Setup a Coreboot Buildroot with Vagrant</title><link href="http://localhost:4000/2019/06/18/Coreboot-Buildroot-With-Vagrant" rel="alternate" type="text/html" title="Setup a Coreboot Buildroot with Vagrant" /><published>2019-06-18T00:00:00+02:00</published><updated>2019-06-18T00:00:00+02:00</updated><id>http://localhost:4000/2019/06/18/Coreboot-Buildroot-With-Vagrant</id><content type="html" xml:base="http://localhost:4000/2019/06/18/Coreboot-Buildroot-With-Vagrant">&lt;p&gt;Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.&lt;/p&gt;
+
+&lt;p&gt;With this short Vagrant file you should be up and running in a breeze without having any headaches.&lt;/p&gt;
+
+&lt;p&gt;Create a Folder and put this &lt;code class=&quot;highlighter-rouge&quot;&gt;Vagrantfile&lt;/code&gt; into it.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# -*- mode: ruby -*-&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# vi: set ft=ruby :&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Vagrant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;box&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ubuntu/bionic64&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;provider&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;virtualbox&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;vb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;gui&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+  
+     &lt;span class=&quot;n&quot;&gt;vb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;memory&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;8192&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;provision&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;shell&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;inline: &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SHELL&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+    
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python bison build-essential curl flex git gnat libncurses5-dev m4 zlib1g-dev
+    git clone https://review.coreboot.org/coreboot /vagrant/coreboot
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;  SHELL&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;After running the command &lt;code class=&quot;highlighter-rouge&quot;&gt;vagrant up&lt;/code&gt; in the folder a VirtualBox Ubuntu Bionic 64 VM should get created and you will have access to the coreboot source by either opening the &lt;code class=&quot;highlighter-rouge&quot;&gt;coreboot&lt;/code&gt; Folder from your host or sshing to the virtual machine by using the command &lt;code class=&quot;highlighter-rouge&quot;&gt;vagrant ssh&lt;/code&gt; and cd’ing to &lt;code class=&quot;highlighter-rouge&quot;&gt;/vagrant&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Happy hacking!&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="coreboot" /><category term="privacy" /><category term="security" /><category term="trusted computing" /><category term="BIOS" /><category term="coreboot buildroot" /><category term="vagrant" /><category term="firmware" /><category term="libreboot" /><category term="opensource" /><category term="Intel ME" /><category term="Intel Management Engine" /><summary type="html">Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.</summary></entry><entry><title type="html">Setup a blog using Jekyll</title><link href="http://localhost:4000/2019/06/11/how-to-setup-a-blog-using-jekyll" rel="alternate" type="text/html" title="Setup a blog using Jekyll" /><published>2019-06-11T00:00:00+02:00</published><updated>2019-06-11T00:00:00+02:00</updated><id>http://localhost:4000/2019/06/11/how-to-setup-a-blog-using-jekyll</id><content type="html" xml:base="http://localhost:4000/2019/06/11/how-to-setup-a-blog-using-jekyll">&lt;p&gt;Today i’m going to show you how ive setup this blog. I decided to go with the default theme &lt;a href=&quot;https://github.com/jekyll/minima&quot;&gt;Minima&lt;/a&gt; that you get when creating a new &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; site and customize it to my needs.&lt;/p&gt;
+
+&lt;h2 id=&quot;quickstart&quot;&gt;Quickstart&lt;/h2&gt;
+
+&lt;p&gt;taken from following url: &lt;a href=&quot;https://jekyllrb.com/docs/&quot;&gt;https://jekyllrb.com/docs/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Install Ruby for your distribution&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Install Jekyll and bundler gems&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll bundler&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a new Jekyll site at ./myblog&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll new myblog&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Change into your new directory&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cd myblog&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Build the site and make it available on a local server&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle exec jekyll serve&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Now browse to &lt;a href=&quot;http://localhost:4000&quot;&gt;http://localhost:4000&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Great.. We’re now up and running and can dive into the customizations i wanted this blog to have.&lt;/p&gt;
+
+&lt;h2 id=&quot;sorted-navigation&quot;&gt;Sorted navigation&lt;/h2&gt;
+
+&lt;p&gt;To control the order or the navigation links of the default theme you simply just have to include a &lt;code class=&quot;highlighter-rouge&quot;&gt;header_pages&lt;/code&gt; section into your &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.xml&lt;/code&gt;. Like doumented on the github page of the theme.&lt;/p&gt;
+
+&lt;p&gt;So on my blog the section looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;header_pages:
+  - categories.md
+  - tags.md
+  - privacy.md
+  - imprint.md
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;excerpts-on-the-home-page&quot;&gt;Excerpts on the Home Page&lt;/h3&gt;
+
+&lt;p&gt;To show some excerpt of the posts on the overview page we simply just follow the documentation of the minima theme again and add a &lt;strong&gt;show_excerpts&lt;/strong&gt; attribute to our &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;show_excerpts: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now to the tricky part. Since I wanted to have some kinda indicator on the overview page that makes sure that this is just an excerpt and you have to click on the post to read the full article i had modify the theme a little bit.&lt;/p&gt;
+
+&lt;p&gt;But nothing easier then that. Lets go.&lt;/p&gt;
+
+&lt;p&gt;If we look into the sourcecode of the theme we’re going to find the affected component in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; folder called &lt;code class=&quot;highlighter-rouge&quot;&gt;home.html&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;So we simply just create a &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; folder in our blog aswell. Copy over the affected layout &lt;code class=&quot;highlighter-rouge&quot;&gt;home.html&lt;/code&gt; from the default theme and modify the post.excerpt part in the source like so:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{%- if site.show_excerpts -%}
+    {{ post.excerpt }}
+    &amp;lt;a class=&quot;excerpt-post-link&quot; href=&quot;{{ post.url | relative_url }}&quot;&amp;gt;Continue reading →&amp;lt;/a&amp;gt;
+{%- endif -%}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We have now successfully overwritten the home.html of the default theme and should have a nice looking overview page with excerpts and an indicator.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-06-11/excerpt.png&quot; alt=&quot;screenshot home layout with excerpt&quot; height=&quot;100px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lets get trickier..&lt;/p&gt;
+
+&lt;h3 id=&quot;adding-liquid-tags-and-categories-to-your-page&quot;&gt;Adding Liquid Tags and Categories to your page&lt;/h3&gt;
+
+&lt;p&gt;There are different ways to add categories and tags to your layout.&lt;/p&gt;
+
+&lt;p&gt;For a simple overview page you can follow along the tutorial on the &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyll site&lt;/a&gt; and create a markdown file that will list all those tags and categories on one page but that wasnt realy what i wanted. I wanted those overview pages to be sorted, maybe searchable in a future version and have a bit more structure to all of this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-06-11/categories_and_tags_tree.png&quot; alt=&quot;screenshot home layout with excerpt&quot; width=&quot;300px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And there is a way to archive that by using &lt;code class=&quot;highlighter-rouge&quot;&gt;generators&lt;/code&gt; that jekyll provides which allow you to get a little bit deeper into the materia.&lt;/p&gt;
+
+&lt;p&gt;You can read up more about generators following this link &lt;a href=&quot;https://jekyllrb.com/docs/plugins/generators/&quot;&gt;Jekyll Generators&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately i dont find the source of evil where i copied most of the code from right now. If you know it feel free to send me an email and i’ll update this page.&lt;/p&gt;
+
+&lt;p&gt;Nevertheless lets dive into the funky world of Jekyll generators now.&lt;/p&gt;
+
+&lt;p&gt;Generators are placed into a folder called &lt;code class=&quot;highlighter-rouge&quot;&gt;_plugins&lt;/code&gt; which are ruby files that get executed pretty early in the build process and wont be picked up by any of the watch and reload methods the build and serve methods provide. So keep in mind to manualy restart a build when working with plugins.&lt;/p&gt;
+
+&lt;p&gt;Now to the code.&lt;/p&gt;
+
+&lt;p&gt;We create a folder called ‘_plugins’ like stated before and create a file called _cat_gen.rb in that folder.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_cat_gen.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Jekyll&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CatIndex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Page&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@site&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'index.html'&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read_yaml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'_layouts'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cat_index.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cat'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CatGenerator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Generator&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;safe&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;layouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;key?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cat_index'&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'categories'&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;categories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;write_cat_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write_cat_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CatIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;layouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;site_payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If you read carefully you’ll see that we need to provide a layout file called cat_index into which our categories will get generated.&lt;/p&gt;
+
+&lt;p&gt;So lets go and create this file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cat_index.html&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;category&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- &amp;lt;a class=&quot;tag__back&quot; href=&quot;/&quot;&amp;gt;&amp;amp;lt;-- back&amp;lt;/a&amp;gt; --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-list-heading&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ page.cat }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    {% if site.categories[page.cat] %}
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;ul&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-list&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+      {% for post in site.categories[page.cat] %}
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;
+        {%- assign date_format = site.minima.date_format | default: &quot;%b %-d, %Y&quot;
+        -%}
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-meta&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ post.date | date: date_format }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-link&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ post.url | relative_url }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            {{ post.title | escape }}
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+        {%- if site.show_excerpts -%}
+        {{ post.excerpt }}
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;excerpt-post-link&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ post.url | relative_url }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+          Continue reading →
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+        {%- endif -%}
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+      {% endfor %}
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+    {% else %}
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;There is no posts for this category.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+    {% endif %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If we now manually retrigger a build process we should have a structured folder called categories with all sub-categories and their belonging index.html files.&lt;/p&gt;
+
+&lt;p&gt;Besides of that i wanted to have a Category and Tags link in the Navigation bar aswell which links to this folder.
+For this we simply just create a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;categories.md&lt;/code&gt; in the root of our project with the following source.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;---
+layout: page
+title: Categories
+permalink: /categories/
+---
+
+{% assign categories = site.categories | sort %}
+
+{% for category in categories %}
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-list&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;font-size: {{ category | last | size | times: 400 | divided_by: categories.size }}%&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/categories/{{ category | first | slugize }}/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+{{ category | first }} ({{ category | last | size }})
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+{% endfor %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;To get the tags working you can simply reuse all of the above and make sure that you exchange the site.categories variable with site.tags or simply copy and paste the code from my &lt;a href=&quot;https://github.com/kseyhan/kseyhan.github.io&quot;&gt;github source&lt;/a&gt; of truth.&lt;/p&gt;
+
+&lt;p&gt;If done right there should be a category_overview page now looking something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-06-11/categories_overview.png&quot; alt=&quot;screenshot categories overview&quot; width=&quot;300px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the only thing missing is that we show those categories and tags under each post aswell so the user can click on them and browse along.&lt;/p&gt;
+
+&lt;p&gt;So lets go..&lt;/p&gt;
+
+&lt;p&gt;We copy the &lt;code class=&quot;highlighter-rouge&quot;&gt;post.html&lt;/code&gt; from the minima source into our &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;and we paste folling code to the end of that page&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;  &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;u-url&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ page.url | relative_url }}&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;hidden&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+
+  {% if page.categories %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&amp;gt;&lt;/span&gt; Posted in: &lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+  {% for category in page.categories %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/categories/{{ category }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ category }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{% if forloop.last==false %}, {% endif %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+  {% endfor %} {% endif %}
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+
+  {% if page.tags %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&amp;gt;&lt;/span&gt; Tagged: &lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+  {% for tag in page.tags %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/tags/{{ tag }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ tag }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{% if forloop.last==false %}, {% endif %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+  {% endfor %} {% endif %}
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/article&amp;gt;&lt;/span&gt;      &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;I hope you enjoyed the ride.&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="blog" /><category term="jekyll" /><category term="static site generator" /><category term="minima" /><category term="jekyll generators" /><summary type="html">Today i’m going to show you how ive setup this blog. I decided to go with the default theme Minima that you get when creating a new Jekyll site and customize it to my needs.</summary></entry><entry><title type="html">Introduction</title><link href="http://localhost:4000/2019/06/10/Hello-There" rel="alternate" type="text/html" title="Introduction" /><published>2019-06-10T00:00:00+02:00</published><updated>2019-06-10T00:00:00+02:00</updated><id>http://localhost:4000/2019/06/10/Hello-There</id><content type="html" xml:base="http://localhost:4000/2019/06/10/Hello-There">&lt;p&gt;Hello there,
+i finally decided to become a little bit more public by using a blog to document the various things i’m working at.&lt;/p&gt;
+
+&lt;p&gt;In the future youre hopefully going to find a lot of different tutorials, maybe a couple of rants and other things about various technologies over here.&lt;/p&gt;
+
+&lt;p&gt;I hope you enjoy the blog. Incase there are any questions or feedback feel free to use the email you find on the imprint of this blog.&lt;/p&gt;
+
+&lt;p&gt;dears,&lt;/p&gt;
+
+&lt;p&gt;Kerem&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="introduction" /><summary type="html">Hello there, i finally decided to become a little bit more public by using a blog to document the various things i’m working at.</summary></entry></feed>
