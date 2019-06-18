@@ -36,6 +36,6 @@ Vagrant.configure(2) do |config|
 end
 {% endhighlight %}
 
-After running the command `vagrant up` in the folder a VirtualBox Ubuntu Bionic 64 VM should get created and you will have access to the coreboot source by either opening the `coreboot` Folder from your host or sshing to the vagrant folder by using the command `vagrant ssh` and cd'ing to `/vagrant`.
+After running the command `vagrant up` in the folder a VirtualBox Ubuntu Bionic 64 VM should get created and you will have access to the coreboot source by either opening the `coreboot` Folder from your host or sshing to the virtual machine by using the command `vagrant ssh` and cd'ing to `/vagrant`.
 
 Happy hacking!
