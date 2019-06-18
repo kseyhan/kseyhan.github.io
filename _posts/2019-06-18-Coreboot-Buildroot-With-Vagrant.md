@@ -6,7 +6,7 @@ categories: [coreboot]
 tags: [coreboot, privacy, security, trusted computing, BIOS, coreboot buildroot, vagrant, firmware, libreboot, opensource, Intel ME, Intel Management Engine]
 ---
 
-Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because of my gcc version is a little bit newer then the one that you receive on an ubuntu system. So there are two options. You either start hacking arround your main os and downgrade what not to get the buildroot running or you simply setup yourself a Ubuntu vm with all the needed dependencies.
+Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You either start hacking arround your main os and downgrade what not to get the buildroot running or you simply setup yourself a Ubuntu vm with all the needed dependencies.
 
 With this short Vagrant file you should be up and running in a breeze without having any headaches.
 
