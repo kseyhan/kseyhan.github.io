@@ -31,11 +31,15 @@ Vagrant.configure(2) do |config|
     sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
     
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python bison build-essential curl flex git gnat libncurses5-dev m4 zlib1g-dev
-    git clone https://review.coreboot.org/coreboot /vagrant/coreboot
+    git clone https://review.coreboot.org/coreboot ~/coreboot
   SHELL
 end
 {% endhighlight %}
 
-After running the command `vagrant up` in the folder a VirtualBox Ubuntu Bionic 64 VM should get created and you will have access to the coreboot source by either opening the `coreboot` Folder from your host or sshing to the virtual machine by using the command `vagrant ssh` and cd'ing to `/vagrant`.
+After running the command `vagrant up` in the folder a VirtualBox Ubuntu Bionic 64 VM should get created and you will be able to access your buildroot by sshing to the virtual machine by using the command `vagrant ssh`.
 
 Happy hacking!
+
+10.06.2019 Update.
+
+The article just got updated to move the source away from the shared folder, since i found out the hard way that it will give you a lot of compile errors otherwise.
