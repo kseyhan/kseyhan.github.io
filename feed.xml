@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://blog.codecut.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.codecut.de/" rel="alternate" type="text/html" /><updated>2019-07-10T13:47:01+02:00</updated><id>https://blog.codecut.de/feed.xml</id><title type="html">Kerem’s Techblog</title><subtitle>My personal blog about various technical topics. For feedback or questions feel contact me through email.</subtitle><author><name>Kerem Seyhan</name></author><entry><title type="html">Setup a Coreboot Buildroot with Vagrant</title><link href="https://blog.codecut.de/2019/06/18/Coreboot-Buildroot-With-Vagrant" rel="alternate" type="text/html" title="Setup a Coreboot Buildroot with Vagrant" /><published>2019-06-18T00:00:00+02:00</published><updated>2019-06-18T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/06/18/Coreboot-Buildroot-With-Vagrant</id><content type="html" xml:base="https://blog.codecut.de/2019/06/18/Coreboot-Buildroot-With-Vagrant">&lt;p&gt;Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://blog.codecut.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.codecut.de/" rel="alternate" type="text/html" /><updated>2019-07-10T15:30:30+02:00</updated><id>https://blog.codecut.de/feed.xml</id><title type="html">Kerem’s Techblog</title><subtitle>My personal blog about various technical topics. For feedback or questions feel contact me through email.</subtitle><author><name>Kerem Seyhan</name></author><entry><title type="html">How to fix menu artifacts of Eclipse on Fedora 30 or how to skip spefic versions of packages with dnf</title><link href="https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts" rel="alternate" type="text/html" title="How to fix menu artifacts of Eclipse on Fedora 30 or how to skip spefic versions of packages with dnf" /><published>2019-07-10T00:00:00+02:00</published><updated>2019-07-10T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts</id><content type="html" xml:base="https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts">&lt;p&gt;If you’re on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-07-10/eclipse.png&quot; alt=&quot;screenshot eclipse with overlapping artifacts in the project explorer&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Doing some research leads us to following Bug entry in the Eclipse Bugtracker.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://bugs.eclipse.org/bugs/show_bug.cgi?id=548629&quot;&gt;https://bugs.eclipse.org/bugs/show_bug.cgi?id=548629&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Where we can find out that its a problem with the &lt;strong&gt;&lt;em&gt;gtk version 3.24.9&lt;/em&gt;&lt;/strong&gt; and that the devs are working on some fixes for it.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://gitlab.gnome.org/GNOME/gtk/issues/1977&quot;&gt;https://gitlab.gnome.org/GNOME/gtk/issues/1977&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So how to fix this now?&lt;/p&gt;
+
+&lt;p&gt;My solution to fix this problem is as follows.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Downgrade the gtk version to 3.24.8&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;And skip the current version of gtk3 from your updates until the next version 3.24.10 will show up.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So lets go..&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dnf downgrade gtk3-3.24.8&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;So far so good we should have working menus in eclipse again:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-07-10/eclipse-fixed.png&quot; alt=&quot;screenshot eclipse fixed view&quot; width=&quot;200px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;but after we run &lt;code class=&quot;highlighter-rouge&quot;&gt;dnf update&lt;/code&gt; the next time gtk3 will automaticly update again.&lt;/p&gt;
+
+&lt;p&gt;To deal with this problem we have different solutions like running dnf update with the exclude flag as follows &lt;code class=&quot;highlighter-rouge&quot;&gt;dnf update -x gtk3&lt;/code&gt; or exlcude gtk completely from the package manager or we make it proper by just installing a dnf plugin which will allow us to &lt;strong&gt;&lt;em&gt;skip a specific version&lt;/em&gt;&lt;/strong&gt; of gtk until a new version shows up.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dnf &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;python3-dnf-plugin-versionlock&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dnf versionlock exclude gtk3-3.24.9-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.fc30&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Here we go. We should be able to use dnf like we’re used to and the fixed version of Gtk3 should show up as soon as its available through the package manager for us.&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="eclipse" /><category term="fedora" /><category term="gtk3" /><category term="dnf" /><category term="downgrade" /><category term="versionlock" /><category term="python3-dnf-plugin-versionlock" /><summary type="html">If you’re on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:</summary></entry><entry><title type="html">Setup a Coreboot Buildroot with Vagrant</title><link href="https://blog.codecut.de/2019/06/18/Coreboot-Buildroot-With-Vagrant" rel="alternate" type="text/html" title="Setup a Coreboot Buildroot with Vagrant" /><published>2019-06-18T00:00:00+02:00</published><updated>2019-06-18T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/06/18/Coreboot-Buildroot-With-Vagrant</id><content type="html" xml:base="https://blog.codecut.de/2019/06/18/Coreboot-Buildroot-With-Vagrant">&lt;p&gt;Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.&lt;/p&gt;
 
 &lt;p&gt;With this short Vagrant file you should be up and running in a breeze without having any headaches.&lt;/p&gt;
 
