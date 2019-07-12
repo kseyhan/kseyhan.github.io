@@ -1,4 +1,5 @@
 ---
+date: 2019-06-10
 layout: post
 title: "Introduction"
 description: Kerems introduction to the internets.

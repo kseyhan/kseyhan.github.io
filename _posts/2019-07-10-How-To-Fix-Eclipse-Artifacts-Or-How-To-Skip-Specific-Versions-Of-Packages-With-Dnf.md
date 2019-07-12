@@ -1,4 +1,5 @@
 ---
+date: 2019-07-10
 layout: post
 title: "How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf"
 description: How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf.

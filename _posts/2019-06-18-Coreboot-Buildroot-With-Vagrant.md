@@ -1,4 +1,5 @@
 ---
+date: 2019-07-09
 layout: post
 title: "Setup a Coreboot Buildroot with Vagrant"
 description: How to get up an running with a coreboot buildroot in a breeze.
@@ -40,6 +41,6 @@ After running the command `vagrant up` in the folder a VirtualBox Ubuntu Bionic 
 
 Happy hacking!
 
-10.06.2019 Update.
+09.07.2019 Update.
 
 The article just got updated to move the source away from the shared folder, since i found out the hard way that it will give you a lot of compile errors otherwise.
