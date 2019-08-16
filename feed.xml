@@ -1,4 +1,224 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://blog.codecut.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.codecut.de/" rel="alternate" type="text/html" /><updated>2019-07-12T08:09:25+02:00</updated><id>https://blog.codecut.de/feed.xml</id><title type="html">Kerem’s Techblog</title><subtitle>My personal blog about various technical topics. For feedback or questions feel contact me through email.</subtitle><author><name>Kerem Seyhan</name></author><entry><title type="html">How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf</title><link href="https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts-Or-How-To-Skip-Specific-Versions-Of-Packages-With-Dnf" rel="alternate" type="text/html" title="How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf" /><published>2019-07-10T00:00:00+02:00</published><updated>2019-07-10T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts-Or-How-To-Skip-Specific-Versions-Of-Packages-With-Dnf</id><content type="html" xml:base="https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts-Or-How-To-Skip-Specific-Versions-Of-Packages-With-Dnf">&lt;p&gt;If you’re on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://blog.codecut.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.codecut.de/" rel="alternate" type="text/html" /><updated>2019-08-16T21:29:13+02:00</updated><id>https://blog.codecut.de/feed.xml</id><title type="html">Kerem’s Techblog</title><subtitle>My personal blog about various technical topics. For feedback or questions feel contact me through email.</subtitle><author><name>Kerem Seyhan</name></author><entry><title type="html">How to create a secured development environment using Gitea, Jenkins and Docker</title><link href="https://blog.codecut.de/2019/08/16/How-To-Get-Gitea-And-Jenkins-Up-And-Running-Securely" rel="alternate" type="text/html" title="How to create a secured development environment using Gitea, Jenkins and Docker" /><published>2019-08-16T00:00:00+02:00</published><updated>2019-08-16T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/08/16/How-To-Get-Gitea-And-Jenkins-Up-And-Running-Securely</id><content type="html" xml:base="https://blog.codecut.de/2019/08/16/How-To-Get-Gitea-And-Jenkins-Up-And-Running-Securely">&lt;p&gt;Today a little walkthru on how to setup yourself a somewhat secured development environment using Gitea as a Git Server and Jenkins as a CI/CD Solution on top.&lt;/p&gt;
+
+&lt;p&gt;We are starting with following &lt;strong&gt;&lt;em&gt;docker-compose.yml&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2&quot;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;gitea&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;external&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;false&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;gitea&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gitea/gitea:latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ROOT_URL=http://localhost:3000/&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;SSH_DOMAIN=localhost&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;RUN_MODE=prod&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DISABLE_REGISTRATION=true&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;REQUIRE_SIGNIN_VIEW=true&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_TYPE=postgres&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_HOST=db:5432&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_NAME=gitea&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_USER=gitea&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_PASSWD=asecret&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gitea&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gitea:/data&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:3000:3000&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:11111:22&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;db&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;cpuset&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;mem_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1024m&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres:11&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_USER=gitea&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_PASSWORD=asecret&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_DB=gitea&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gitea&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres:/var/lib/postgresql/data&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;cpuset&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;mem_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1024m&lt;/span&gt;    
+  
+  &lt;span class=&quot;na&quot;&gt;jenkins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jenkins/jenkins:lts&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:8080:8080&quot;&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# - &quot;50000:50000&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jenkins:/var/jenkins_home&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gitea&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;cpuset&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2,3&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;mem_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;4096m&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;postgres&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;gitea&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;jenkins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Description of some uncommented relevant parts:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ROOT_URL&lt;/code&gt;: This is useful if the internal and the external URL don’t match (e.g. in Docker).&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SSH_DOMAIN&lt;/code&gt;: localhost: Domain name of this server, used for the displayed clone URL in Gitea’s UI.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RUN_MODE&lt;/code&gt;: For performance and other purposes, change this to prod when deployed to a production environment.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DISABLE_REGISTRATION&lt;/code&gt;: Disable registration, after which only admin can create accounts for users.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;REQUIRE_SIGNIN_VIEW&lt;/code&gt;: Enable this to force users to log in to view any page.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cpuset&lt;/code&gt;:  limit the process to a specific cpu of the host&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mem_limit&lt;/code&gt;: limit the maximum ammount of memory this container can use&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Most of the previously mentioned settings can happily be ignored and commented out if youre planing to run your environment on a save network or on localhost only but can come in pretty handy if youre trying to run this setup on a server thats facing the internet.&lt;/p&gt;
+
+&lt;p&gt;As we see ive got a special setup which requires the users to be signed in to view the code and where only administrators are able to create user accounts. This setup needs special threatment in the way we’re going to setup a account for jenkins on the gitea server like we’re going to see later.&lt;/p&gt;
+
+&lt;p&gt;Lets run &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt; to get this up and running.&lt;/p&gt;
+
+&lt;p&gt;Somwhere in the startup log in the console youre going to find the password for jenkins.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/jenkins_passwd.png&quot; alt=&quot;screenshot jenkins password in console&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note it down, we’re going to need this later.&lt;/p&gt;
+
+&lt;p&gt;Open &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:3000&lt;/code&gt; to setup gitea and click on the login button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_main.png&quot; alt=&quot;gitea main window&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Change the ssh port to the one you exposed on the hostsystem and setup your admin account.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_setup.png&quot; alt=&quot;gitea setup window&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;create a new organisation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_new_organisation_1.png&quot; alt=&quot;gitea new organisation 1 window&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_new_organisation_2.png&quot; alt=&quot;gitea new organisation 2 window&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now it starts to get interesting and we’re getting closer to the point why i decided to create this tutorial.&lt;/p&gt;
+
+&lt;p&gt;We’re going to create a user for Jenkins.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_website_admin_1.png&quot; alt=&quot;gitea website administration&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_website_admin_2.png&quot; alt=&quot;gitea website administration&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_new_user.png&quot; alt=&quot;gitea new user&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After creating the new user youre going to get redirected to the user settings overview.&lt;/p&gt;
+
+&lt;p&gt;Update the settings for the user as follows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_usersettings.png&quot; alt=&quot;gitea user settings&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now add the user to the organisations you want your jenkins to have access to.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;open up the overview of your newly created organisation.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_organisation_settings_1.png&quot; alt=&quot;gitea organisation settings 1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And here we are tada the point why i decided to create this lenghtly tutorial/report.. As i had to find out the hard way due to some bugs with the gitea jenkins plugin and the integration with the required sign in view i wanted gitea to have you have to add your jenkinsuser as a owner of the organisation to get it properly running or give your jenkinsuser global admin rights. If you decide to make your gitea public readable you can create a new group and give your jenkinsuser readonly rights instead of following the next few gitea steps here.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_organisations.png&quot; alt=&quot;gitea organisation overview&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_organisations_add_user.png&quot; alt=&quot;gitea organisation add user&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So far so good.. Your Gitea should be properly configured now.&lt;/p&gt;
+
+&lt;p&gt;Lets dive into getting Jenkins up and running.&lt;/p&gt;
+
+&lt;p&gt;Open up &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8080&lt;/code&gt; and enter the password from the console you noted down earlier.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_first_login.png&quot; alt=&quot;Jenkins first login&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Install the suggested plugins and wait for the installation routine to finish.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_suggested_plugins.png&quot; alt=&quot;Jenkins first login&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Create your admin user account
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_create_admin_account.png&quot; alt=&quot;Jenkins first login&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Configure your the jenkins instance url as follows and click on finish!
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_instance_url.png&quot; alt=&quot;Jenkins first login&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now install the Gitea Plugin for Jenkins by clicking the configure Jenkins button.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_overview_1.png&quot; alt=&quot;Jenkins first login&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_Plugin_Link.png&quot; alt=&quot;Jenkins plugins link&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;refresh the list of plugins&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_plugins_refresh.png&quot; alt=&quot;Jenkins plugins refresh button&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and install the Gitea plugin
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_Gitea_plugin_install.png&quot; alt=&quot;Jenkins plugins install gitea plugin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the sake of it lets restart jenkins and start to configure the gitea plugin&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_Gitea_plugin_sucessfully_installed.png&quot; alt=&quot;Jenkins Gite Plugin successfully installed&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After logging back in change to the cofigure Jenkins view again.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_overview_1.png&quot; alt=&quot;Jenkins first login&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Click on configure system
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_cofiguration_button.png&quot; alt=&quot;Jenkins configure system&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Click on add new Gitea Server
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Add_Gitea_Server_button.png&quot; alt=&quot;Add new Gitea Server Button&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Add a Name enter the url to your instance
+Allow Jenkins to manage the hooks and add the credentials for your jenkinsuser.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_server_configuration.png&quot; alt=&quot;Gitea Server Configuration&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The error message that gives back a 403/Forbidden can be happily ignored since thats another bug in the gitea plugin that doesnt handle the sign in to view option for gitea properly.&lt;/p&gt;
+
+&lt;p&gt;Add the credentials of the user you configured earlier in Gitea as Jenkinsuser
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_gitea_server_add_credentials.png&quot; alt=&quot;Gitea Server Configuration&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and save your configuration.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/save_jenkins_configuration.png&quot; alt=&quot;Gitea Save Configuration Button&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we’re going to create a Gitea organisation in Jenkins.
+Click on create new element in the main view.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_create_new_element.png&quot; alt=&quot;Gitea Save Configuration Button&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Give it the name of the organisation you chose before in gitea
+Click on the Gitea Organisation button
+and acknowledge with a click on the ok button.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_new_gitea_organisation.png&quot; alt=&quot;Gitea Save Configuration Button&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the next window select the credentials for your gitea user fromt the dropdown.
+The rest can stay as is save your configuration.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_Gitea_Organisation_configuration.png&quot; alt=&quot;Gitea Save Configuration Button&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this point you should be up and running.
+To test if thats realy the case create a testrepository for your organisation in gitea and add a Jenkinsfile to it.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Gitea_testrepo.png&quot; alt=&quot;Gitea Testrepo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Back to Jenkins scan your organisation for new repositories.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_scan_organisation.png&quot; alt=&quot;Jenkins scan organisation&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the log you should find an entry that states that a repository was found.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/Jenkins_organisation_scan_log.png&quot; alt=&quot;Jenkins Gitea Organization Log&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now back to Gite again go into the settings of the repository and make sure that Jenkins added a Webhook for your project.
+&lt;img src=&quot;/assets/img/posts/2019-08-16/gitea_testrepo_settings.png&quot; alt=&quot;Jenkins Gitea Organization Log&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Afer 34 Screenshots we’re finally done.&lt;/p&gt;
+
+&lt;p&gt;Happy coding, integrating and delivering!&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="jenkins" /><category term="gitea" /><category term="docker-compose" /><category term="docker" /><summary type="html">Today a little walkthru on how to setup yourself a somewhat secured development environment using Gitea as a Git Server and Jenkins as a CI/CD Solution on top.</summary></entry><entry><title type="html">How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf</title><link href="https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts-Or-How-To-Skip-Specific-Versions-Of-Packages-With-Dnf" rel="alternate" type="text/html" title="How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf" /><published>2019-07-10T00:00:00+02:00</published><updated>2019-07-10T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts-Or-How-To-Skip-Specific-Versions-Of-Packages-With-Dnf</id><content type="html" xml:base="https://blog.codecut.de/2019/07/10/How-To-Fix-Eclipse-Artifacts-Or-How-To-Skip-Specific-Versions-Of-Packages-With-Dnf">&lt;p&gt;If you’re on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/img/posts/2019-07-10/eclipse.png&quot; alt=&quot;screenshot eclipse with overlapping artifacts in the project explorer&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
 
@@ -39,7 +259,7 @@
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dnf versionlock exclude gtk3-3.24.9-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.fc30&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;Here we go. We should be able to use dnf like we’re used to and the fixed version of Gtk3 should show up as soon as its available through the package manager for us.&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="eclipse" /><category term="fedora" /><category term="gtk3" /><category term="dnf" /><category term="downgrade" /><category term="versionlock" /><category term="python3-dnf-plugin-versionlock" /><category term="gtk3-3.24.9" /><summary type="html">If you’re on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:</summary></entry><entry><title type="html">Setup a Coreboot Buildroot with Vagrant</title><link href="https://blog.codecut.de/2019/07/09/Coreboot-Buildroot-With-Vagrant" rel="alternate" type="text/html" title="Setup a Coreboot Buildroot with Vagrant" /><published>2019-07-09T00:00:00+02:00</published><updated>2019-07-09T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/07/09/Coreboot-Buildroot-With-Vagrant</id><content type="html" xml:base="https://blog.codecut.de/2019/07/09/Coreboot-Buildroot-With-Vagrant">&lt;p&gt;Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.&lt;/p&gt;
+&lt;p&gt;Here we go. We should be able to use dnf like we’re used to and the fixed version of Gtk3 should show up as soon as its available through the package manager for us.&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="eclipse" /><category term="fedora" /><category term="gtk3" /><category term="dnf" /><category term="downgrade" /><category term="versionlock" /><category term="python3-dnf-plugin-versionlock" /><category term="gtk3-3.24.9 bug" /><summary type="html">If you’re on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:</summary></entry><entry><title type="html">Setup a Coreboot Buildroot with Vagrant</title><link href="https://blog.codecut.de/2019/07/09/Coreboot-Buildroot-With-Vagrant" rel="alternate" type="text/html" title="Setup a Coreboot Buildroot with Vagrant" /><published>2019-07-09T00:00:00+02:00</published><updated>2019-07-09T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/07/09/Coreboot-Buildroot-With-Vagrant</id><content type="html" xml:base="https://blog.codecut.de/2019/07/09/Coreboot-Buildroot-With-Vagrant">&lt;p&gt;Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.&lt;/p&gt;
 
 &lt;p&gt;With this short Vagrant file you should be up and running in a breeze without having any headaches.&lt;/p&gt;
 
@@ -73,7 +293,7 @@
 
 &lt;p&gt;09.07.2019 Update.&lt;/p&gt;
 
-&lt;p&gt;The article just got updated to move the source away from the shared folder, since i found out the hard way that it will give you a lot of compile errors otherwise.&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="coreboot" /><category term="privacy" /><category term="security" /><category term="trusted computing" /><category term="BIOS" /><category term="coreboot buildroot" /><category term="vagrant" /><category term="firmware" /><category term="libreboot" /><category term="opensource" /><category term="Intel ME" /><category term="Intel Management Engine" /><summary type="html">Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.</summary></entry><entry><title type="html">Setup a blog using Jekyll</title><link href="https://blog.codecut.de/2019/06/11/how-to-setup-a-blog-using-jekyll" rel="alternate" type="text/html" title="Setup a blog using Jekyll" /><published>2019-06-11T00:00:00+02:00</published><updated>2019-06-11T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/06/11/how-to-setup-a-blog-using-jekyll</id><content type="html" xml:base="https://blog.codecut.de/2019/06/11/how-to-setup-a-blog-using-jekyll">&lt;p&gt;Today i’m going to show you how ive setup this blog. I decided to go with the default theme &lt;a href=&quot;https://github.com/jekyll/minima&quot;&gt;Minima&lt;/a&gt; that you get when creating a new &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; site and customize it to my needs.&lt;/p&gt;
+&lt;p&gt;The article just got updated to move the source away from the shared folder, since i found out the hard way that it will give you a lot of compile errors otherwise.&lt;/p&gt;</content><author><name>Kerem Seyhan</name></author><category term="coreboot" /><category term="privacy" /><category term="security" /><category term="trusted computing" /><category term="bios" /><category term="coreboot buildroot" /><category term="vagrant" /><category term="firmware" /><category term="libreboot" /><category term="opensource" /><category term="intel me" /><category term="intel management engine" /><summary type="html">Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.</summary></entry><entry><title type="html">Setup a blog using Jekyll</title><link href="https://blog.codecut.de/2019/06/11/how-to-setup-a-blog-using-jekyll" rel="alternate" type="text/html" title="Setup a blog using Jekyll" /><published>2019-06-11T00:00:00+02:00</published><updated>2019-06-11T00:00:00+02:00</updated><id>https://blog.codecut.de/2019/06/11/how-to-setup-a-blog-using-jekyll</id><content type="html" xml:base="https://blog.codecut.de/2019/06/11/how-to-setup-a-blog-using-jekyll">&lt;p&gt;Today i’m going to show you how ive setup this blog. I decided to go with the default theme &lt;a href=&quot;https://github.com/jekyll/minima&quot;&gt;Minima&lt;/a&gt; that you get when creating a new &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; site and customize it to my needs.&lt;/p&gt;
 
 &lt;h2 id=&quot;quickstart&quot;&gt;Quickstart&lt;/h2&gt;
 
