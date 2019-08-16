@@ -4,7 +4,7 @@ layout: post
 title: "How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf"
 description: How to fix menu artifacts of Eclipse on Fedora 30 or how to skip specific versions of packages with dnf.
 categories: [eclipse]
-tags: [eclipse, fedora, gtk3, dnf, downgrade, versionlock, python3-dnf-plugin-versionlock,  gtk3-3.24.9]
+tags: [eclipse, fedora, gtk3, dnf, downgrade, versionlock, python3-dnf-plugin-versionlock,  gtk3-3.24.9 bug]
 ---
 
 If you're on a bleeding edge linux distribution like Fedora 30 or Arch you may encounter some ugly artifacts in your programs right now like i do with Eclipse which looks something like this:

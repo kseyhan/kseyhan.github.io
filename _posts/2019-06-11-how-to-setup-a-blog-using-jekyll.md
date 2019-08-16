@@ -3,7 +3,7 @@ date: 2019-06-11
 layout: post
 title: "Setup a blog using Jekyll"
 description: A deep dive into generating a professional looking blog using Jekyll as a static site generator with full fledged tags and categories support.
-categories: [Jekyll]
+categories: [jekyll]
 tags: [blog, jekyll, static site generator, minima, jekyll generators]
 ---
 

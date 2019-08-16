@@ -4,7 +4,7 @@ layout: post
 title: "Setup a Coreboot Buildroot with Vagrant"
 description: How to get up an running with a coreboot buildroot in a breeze.
 categories: [coreboot]
-tags: [coreboot, privacy, security, trusted computing, BIOS, coreboot buildroot, vagrant, firmware, libreboot, opensource, Intel ME, Intel Management Engine]
+tags: [coreboot, privacy, security, trusted computing, bios, coreboot buildroot, vagrant, firmware, libreboot, opensource, intel me, intel management engine]
 ---
 
 Ive struggled a bit arround getting the buildroot to sucessfully compile on my linux distribution because my gcc version is a little bit newer then the one that gets installed by default on an ubuntu system. So there are two options. You start hacking arround your main os and downgrade what not to get the buildroot running and hope that it will workout somehow or you simply setup yourself a Ubuntu vm with all the needed dependencies.
